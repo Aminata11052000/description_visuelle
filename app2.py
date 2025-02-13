@@ -30,7 +30,7 @@ def translate_text(text, src="en", dest="fr"):
     except Exception as e:
         return f"Erreur de connexion : {e}"
 
-# 📌 Fonction pour décrire une image
+# 📌 Fonction pour décrire la vidéo 
 def describe_image(image):
     inputs = processor(image, return_tensors="pt").to(device)
     with torch.no_grad():
