@@ -119,7 +119,7 @@ if run:
             audio_lang = "fr"
         else:
             description = description_wo
-            audio_lang = "wo"
+            audio_lang = "fr"
 
         # Définir la position et la taille du fond derrière le texte
         text_x, text_y = 20, 50
