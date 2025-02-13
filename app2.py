@@ -10,16 +10,16 @@ import tempfile
 from PIL import Image, ImageDraw, ImageFont
 from gtts import gTTS
 
-# 📌 Initialisation du modèle
+# Initialisation du modèle
 device = "cuda" if torch.cuda.is_available() else "cpu"
 processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
 model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base").to(device)
 
-# 📌 Vérifier si la liste des fichiers audio existe
+# Vérifier si la liste des fichiers audio existe
 if "audio_files" not in st.session_state:
     st.session_state.audio_files = []
 
-# 📌 Fonction de traduction
+# Fonction de traduction
 def translate_text(text, src="en", dest="fr"):
     try:
         url = f"https://api.mymemory.translated.net/get?q={text}&langpair={src}|{dest}"
@@ -30,7 +30,7 @@ def translate_text(text, src="en", dest="fr"):
     except Exception as e:
         return f"Erreur de connexion : {e}"
 
-# 📌 Fonction pour décrire la vidéo 
+# Fonction pour décrire la vidéo 
 def describe_image(image):
     inputs = processor(image, return_tensors="pt").to(device)
     with torch.no_grad():
@@ -42,7 +42,7 @@ def describe_image(image):
     
     return description_en, description_fr, description_wo
 
-# 📌 Fonction pour générer l'audio
+# Fonction pour générer l'audio
 def text_to_speech(text, lang):
     try:
         tts = gTTS(text, lang=lang)
@@ -53,17 +53,17 @@ def text_to_speech(text, lang):
     except Exception as e:
         return None
 
-# 📌 Fonction pour supprimer un fichier audio
+# Fonction pour supprimer un fichier audio
 def delete_audio(file):
     if file in st.session_state.audio_files:
         os.remove(file)
         st.session_state.audio_files.remove(file)
         st.rerun()  # Rafraîchir la page
 
-# 🎨 Interface Streamlit
+# Interface Streamlit
 st.title("🎥 Vision AI : Analyse Vidéo en Direct")
 
-# 📌 Afficher les fichiers audio avec bouton de suppression
+# Afficher les fichiers audio avec bouton de suppression
 st.subheader("🎵 Audios générés :")
 
 # Utilisation de st.container() pour éviter le problème de suppression en boucle
@@ -75,23 +75,23 @@ with st.container():
             st.audio(audio_file, format="audio/mp3")
 
         with col2:
-            if st.button("❌", key=f"delete_{idx}"):  # Identifiant unique
+            if st.button(key=f"delete_{idx}"):  # Identifiant unique
                 delete_audio(audio_file)
 
-# 📌 Activer la capture vidéo
+# Activer la capture vidéo
 run = st.checkbox("📹 Démarrer la vidéo")
 
-# 📌 Sélectionner la langue
+# Sélectionner la langue
 lang_choice = st.selectbox("🗣️ Choisissez la langue :", ["🇬🇧 Anglais", "🇫🇷 Français", "🇸🇳 Wolof"])
 
-# 📌 Charger une police compatible avec les accents
+# Charger une police compatible avec les accents
 try:
-    font_path = "/System/Library/Fonts/Supplemental/Arial.ttf"  # MacOS
+    font_path = "/System/Library/Fonts/Supplemental/Arial.ttf"
     font = ImageFont.truetype(font_path, 40)
 except:
     font = ImageFont.load_default()
 
-# 📌 Ouvrir la caméra
+# Ouvrir la caméra
 if run:
     cap = cv2.VideoCapture(0)  # 0 = Webcam par défaut
     stframe = st.empty()
