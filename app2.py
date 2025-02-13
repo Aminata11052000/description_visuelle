@@ -31,6 +31,7 @@ def translate_text(text, src="en", dest="fr"):
         return f"Erreur de connexion : {e}"
 
 # Fonction pour décrire la vidéo 
+# Fonction pour décrire une image
 def describe_image(image):
     inputs = processor(image, return_tensors="pt").to(device)
     with torch.no_grad():
